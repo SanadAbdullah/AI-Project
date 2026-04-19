@@ -14,3 +14,7 @@ videos/
 *.avi
 *.mov
 yolo_dataset/
+testdata/
+labels/
+dataset/
+datasets/
