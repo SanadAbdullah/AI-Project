@@ -20,10 +20,7 @@ videos/
 videos & images used before cleaning/
 yolo_dataset/
 dataset/
-datasets/
-labels/
-label_preview/
-testdata/
+
 
 # Large media and documents
 *.mp4
