@@ -8,7 +8,6 @@ __pycache__/
 *.pyc
 
 # Model weights and checkpoints
-*.pt
 
 
 
