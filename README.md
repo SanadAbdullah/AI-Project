@@ -92,7 +92,17 @@ Store **API keys in environment variables** or a local untracked config—not in
 
 ## Environment and dependencies
 
-Use a **Python 3** virtual environment (e.g. `.venv` in this project). Install packages as needed for the parts you use, for example:
+Use a **Python 3** virtual environment (e.g. `.venv` in this project). Install everything pinned to this repo’s last resolved environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+The lockfile was produced from **Python 3.11** on **macOS**; `torch` / `torchvision` wheels differ by OS and CUDA. If install fails, install PyTorch for your platform from [pytorch.org](https://pytorch.org/get-started/locally/), then run `pip install -r requirements.txt` again.
+
+Manual / partial installs (same stack, unpinned):
 
 - **Training / inference:** `ultralytics`, `torch`, `matplotlib`
 - **OpenCV UIs:** `opencv-python`
