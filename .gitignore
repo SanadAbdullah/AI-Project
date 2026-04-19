@@ -7,18 +7,7 @@ venv/
 __pycache__/
 *.pyc
 
-# Model weights and checkpoints
-
-
-
-# Video/image datasets and generated training outputs
-
-
 # Large media and documents
-*.mp4
-*.avi
-*.mov
-*.mkv
 *.doc
 *.docx
 *.pdf
