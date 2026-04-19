@@ -24,3 +24,11 @@ GroundingDINO_SwinT_OGC.py
 yolov8m.pt
 /runs/
 /testdata/
+
+/label_preview/
+/yolo_dataset/
+/dataset/
+/labels/
+/useful scripts/
+/videos/
+/videos & images used before cleaning/
