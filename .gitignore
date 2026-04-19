@@ -1,34 +1,35 @@
-Figure_2.png
-Figure_1.png
-BCS407_project.pdf
-BCS_407_ArtificialIntelligence_NajlaAlFutaisi.docx
-1.docx
-Introduction_to_Modern_AI_certificate_20230004191-students-cud-ac-ae_9406f863-0f6e-4256-9fe2-d43aebd49364.pdf
-videos & images used before cleaning/
+# OS / editor
+.DS_Store
+
+# Python virtual environments and caches
 .venv/
-runs/
+venv/
+__pycache__/
+*.pyc
+
+# Model weights and checkpoints
 *.pt
 *.pth
+*.ckpt
+*.onnx
+*.bin
+
+# Video/image datasets and generated training outputs
+runs/
 videos/
+videos & images used before cleaning/
+yolo_dataset/
+dataset/
+datasets/
+labels/
+label_preview/
+testdata/
+
+# Large media and documents
 *.mp4
 *.avi
 *.mov
-yolo_dataset/
-testdata/
-labels/
-dataset/
-datasets/
-.DS_Store
-groundingdino_swint_ogc.pth
-GroundingDINO_SwinT_OGC.py
-yolov8m.pt
-/runs/
-/testdata/
-
-/label_preview/
-/yolo_dataset/
-/dataset/
-/labels/
-/useful scripts/
-/videos/
-/videos & images used before cleaning/
+*.mkv
+*.doc
+*.docx
+*.pdf
