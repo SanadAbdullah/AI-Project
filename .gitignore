@@ -13,3 +13,4 @@ videos/
 *.avi
 *.mov
 yolo_dataset/
+.venv/
