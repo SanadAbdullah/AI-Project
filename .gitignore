@@ -8,11 +8,7 @@ __pycache__/
 *.pyc
 
 # Model weights and checkpoints
-*.pt
-*.pth
-*.ckpt
-*.onnx
-*.bin
+
 
 # Video/image datasets and generated training outputs
 runs/
