@@ -13,7 +13,6 @@ __pycache__/
 
 # Video/image datasets and generated training outputs
 videos & images used before cleaning/
-yolo_dataset/
 
 
 # Large media and documents

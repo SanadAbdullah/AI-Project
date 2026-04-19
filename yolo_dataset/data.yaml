@@ -1,0 +1,7 @@
+path: /Users/sanadalsharafi/Desktop/AI-Project/yolo_dataset
+train: train/images
+val: val/images
+test: test/images
+
+nc: 4
+names: ['safety_helmet', 'fire_extinguisher', 'emergency_exit', 'traffic_cone']
