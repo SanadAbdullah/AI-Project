@@ -1,4 +1,4 @@
-path: /Users/sanadalsharafi/Desktop/Work/AI-Project/yolo_dataset
+path: .
 train: train/images
 val: val/images
 test: test/images
