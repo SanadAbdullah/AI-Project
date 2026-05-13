@@ -11,3 +11,4 @@ __pycache__/
 *.doc
 *.docx
 *.pdf
+dataset/recup_dir.*
