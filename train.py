@@ -18,17 +18,17 @@ import matplotlib.image as mpimg
 # CONFIG
 # ─────────────────────────────────────────────
 
-DATASET_YAML = Path("yolo_dataset/data.yaml")
-# Default continuation checkpoint produced by model.train(..., project/name below)
-BEST_WEIGHTS = Path("runs/detect/runs/train/safety-detection/weights/best.pt")
+DATASET_YAML  = Path("yolo_dataset/data.yaml")
+BEST_WEIGHTS  = Path("runs/detect/runs/train/safety-detection-v2/weights/best.pt")
 
-MODEL_SIZE   = "yolov8m.pt"
-EPOCHS       = 100
-IMAGE_SIZE   = 640
-BATCH_SIZE   = 8
-DEVICE       = "mps"  # Apple Silicon; use "cuda:0" or "cpu" as needed
+MODEL_SIZE    = "yolov8m.pt"
+EPOCHS        = 100
+IMAGE_SIZE    = 640
+BATCH_SIZE    = 20
+DEVICE        = "mps"
+FORCE_RETRAIN = False
 
-TEST_DIR     = Path("testdata")
+TEST_DIR      = Path("testdata")
 
 # ─────────────────────────────────────────────
 # 1. TRAIN (skip if already trained)
@@ -39,24 +39,39 @@ print(f"Dataset:  {DATASET_YAML.resolve()}")
 print(f"Device:   {DEVICE}")
 print()
 
-if BEST_WEIGHTS.exists():
-    print(f"Training already complete. Using existing weights: {BEST_WEIGHTS}")
+if not FORCE_RETRAIN and BEST_WEIGHTS.exists():
+    print(f"Using existing weights: {BEST_WEIGHTS}")
 else:
-    print(f"No trained model found. Starting fresh with {MODEL_SIZE}")
-    model = YOLO(MODEL_SIZE)
-    model.train(
-        data=str(DATASET_YAML),
-        epochs=EPOCHS,
-        imgsz=IMAGE_SIZE,
-        batch=BATCH_SIZE,
-        device=DEVICE,
-        project="runs/train",
-        name="safety-detection",
-        patience=20,  # early stop if no val improvement for this many epochs
-        save=True,
-        plots=True,
-        verbose=True,
-    )
+    last_weights = Path("runs/detect/runs/train/safety-detection-v2/weights/last.pt")
+    if last_weights.exists():
+        print(f"Resuming training from: {last_weights}")
+        model = YOLO(str(last_weights))
+        model.train(resume=True)
+    else:
+        print(f"Starting fresh with {MODEL_SIZE}")
+        model = YOLO(MODEL_SIZE)
+        model.train(
+            data=str(DATASET_YAML),
+            epochs=EPOCHS,
+            imgsz=IMAGE_SIZE,
+            batch=BATCH_SIZE,
+            device=DEVICE,
+            project="runs/train",
+            name="safety-detection-v2",
+            patience=30,
+            save=True,
+            plots=True,
+            verbose=True,
+            hsv_h=0.015,
+            hsv_s=0.7,
+            hsv_v=0.4,
+            degrees=10.0,
+            translate=0.1,
+            scale=0.5,
+            flipud=0.1,
+            mosaic=1.0,
+            mixup=0.1,
+        )
 
 print(f"\nBest weights: {BEST_WEIGHTS}")
 
@@ -69,7 +84,7 @@ best_model = YOLO(str(BEST_WEIGHTS))
 
 metrics = best_model.val(
     data=str(DATASET_YAML),
-    split="test",  # uses yolo_dataset/test/images from data.yaml
+    split="test",
     device=DEVICE,
     plots=True,
     save_json=True,
@@ -86,8 +101,7 @@ print("────────────────────────�
 # 3. SHOW TRAINING PLOTS
 # ─────────────────────────────────────────────
 
-# Ultralytics writes diagnostics here; path mirrors project layout under runs/
-plots_dir = Path("runs/detect/runs/train/safety-detection")
+plots_dir = Path("runs/detect/runs/train/safety-detection-v2")
 plot_files = [
     "confusion_matrix.png",
     "results.png",
@@ -105,7 +119,6 @@ for plot_file in plot_files:
         plt.title(plot_file.replace(".png", "").replace("_", " "))
         plt.axis("off")
         plt.tight_layout()
-        # Duplicate with display_ prefix for convenience; plt.show() blocks until windows close
         plt.savefig(str(plots_dir / f"display_{plot_file}"))
         plt.show()
     else:
@@ -125,9 +138,9 @@ if TEST_DIR.exists() and any(TEST_DIR.iterdir()):
         inference_results = best_model.predict(
             source=str(TEST_DIR),
             device=DEVICE,
-            conf=0.25,  # confidence threshold for kept boxes
+            conf=0.25,
             save=True,
-            save_txt=True,  # optional YOLO txt labels next to saved vis
+            save_txt=True,
             project="runs/inference",
             name="demo",
         )
